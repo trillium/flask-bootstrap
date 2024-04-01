@@ -16,9 +16,10 @@ class WTFormsRenderer(Visitor):
                  action='',
                  id=None,
                  method='post',
-                 extra_classes=[],
+                 extra_classes=None,
                  role='form',
                  enctype=None):
+        extra_classes = [] if extra_classes is None else extra_classes
         self.action = action
         self.form_id = id
         self.method = method
@@ -45,7 +46,8 @@ class WTFormsRenderer(Visitor):
 
     def _wrapped_input(self, node,
                        type='text',
-                       classes=['form-control'], **kwargs):
+                       classes=None, **kwargs):
+        classes = ['form-control'] if classes is None else classes
         wrap = self._get_wrap(node)
         wrap.add(tags.label(node.label.text, _for=node.id))
         wrap.add(tags.input(type=type, _class=' '.join(classes), **kwargs))
